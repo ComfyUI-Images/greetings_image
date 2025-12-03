@@ -1,6 +1,7 @@
 # clean base image containing only comfyui, comfy-cli and comfyui-manager
-RUN echo "Token value: $CIVITAI_TOKEN"
 FROM runpod/worker-comfyui:5.5.0-base
+
+RUN echo "Token value: $CIVITAI_TOKEN"
 
 # install custom nodes into comfyui
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
