@@ -7,7 +7,6 @@ RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # download models into comfyui
-ARG CIVITAI_TOKEN
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras && \
     curl -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" -o /comfyui/models/checkpoints/pornmaster_proSDXLV7.safetensors "https://civitai.com/api/download/models/2043971?type=Model&format=SafeTensor&size=pruned&fp=fp16" && \
     curl -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" -o /comfyui/models/loras/Seductive_Expression_SDXL-000040.safetensors "https://civitai.com/api/download/models/2188184?type=Model&format=SafeTensor" && \
