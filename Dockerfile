@@ -4,6 +4,8 @@ FROM runpod/worker-comfyui:5.5.0-base
 # install custom nodes into comfyui
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
 
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # download models into comfyui
 ARG CIVITAI_TOKEN
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras && \
