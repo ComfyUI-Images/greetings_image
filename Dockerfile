@@ -2,8 +2,11 @@ FROM runpod/worker-comfyui:5.5.0-base
 
 ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
 
+RUN apt-get update && apt-get install -y curl \
+    build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3"
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # install nodes
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
