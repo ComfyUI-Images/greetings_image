@@ -11,7 +11,7 @@ RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
 RUN comfy node install --exit-on-fail comfyui-base64-to-image@1.0.0
 
 # download models into comfyui
-RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras
+RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision
 RUN curl -L -H "Authorization: Bearer ${CVT}" -o /comfyui/models/checkpoints/pornmaster_proSDXLV7.safetensors "https://civitai.com/api/download/models/2043971?type=Model&format=SafeTensor&size=pruned&fp=fp16"
 RUN curl -L -H "Authorization: Bearer ${CVT}" -o /comfyui/models/loras/Seductive_Expression_SDXL-000040.safetensors "https://civitai.com/api/download/models/2188184?type=Model&format=SafeTensor"
 RUN curl -L -H "Authorization: Bearer ${CVT}" -o /comfyui/models/loras/Seductive_Finger_Lips_Expression_SDXL-000046.safetensors "https://civitai.com/api/download/models/2277333?type=Model&format=SafeTensor"
