@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y curl \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3"
+RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime
 
 # install nodes
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
