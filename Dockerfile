@@ -2,7 +2,7 @@ FROM runpod/worker-comfyui:5.5.0-base
 
 ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
 
-RUN /opt/venv/bin/pip install opencv-python insightface onnxruntime-gpu
+RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime-gpu
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # install nodes
