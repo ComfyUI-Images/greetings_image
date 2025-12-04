@@ -5,7 +5,7 @@ ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
 
 # install custom nodes into comfyui
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
-RUN comfy node install --exit-on-fail comfyui_base64_to_image@1.0.0
+RUN comfy node install --exit-on-fail comfyui-base64-to-image@1.0.0
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
