@@ -10,7 +10,7 @@ RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime
 
 # install nodes
 RUN comfy node install --exit-on-fail comfyui_ipadapter_plus@2.0.0
-RUN comfy node install --exit-on-fail comfyui-base64-to-image@1.0.0
+RUN comfy node install --exit-on-fail comfyui_base64images
 
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision
 
