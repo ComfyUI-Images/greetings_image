@@ -2,7 +2,7 @@ FROM runpod/worker-comfyui:5.5.0-base
 
 ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
 
-RUN apt-get update && apt-get install -y curl \
+RUN apt-get update && apt-get install -y curl git\
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -10,7 +10,7 @@ RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime
 
 # install nodes
 RUN comfy node install comfyui_ipadapter_plus@2.0.0
-RUN comfy node install ComfyUI_Base64Images
+RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custom_nodes/ComfyUI_Base64Images
 
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision
 
