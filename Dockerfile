@@ -2,7 +2,7 @@ FROM runpod/worker-comfyui:5.5.0-base
 
 ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
 
-RUN apt-get update && apt-get install -y curl git\
+RUN apt-get update && apt-get install -y curl git \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
