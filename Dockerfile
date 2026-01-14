@@ -1,71 +1,61 @@
 FROM runpod/worker-comfyui:5.5.0-base
 
-ENV CVT="8894b6af3f93a899ba9d2f268ddc45aa"
+# Define build arguments for tokens
+ARG HUGGINGFACE_TOKEN
+ARG CIVITAI_TOKEN
 
+# Set environment variables from args (optional, but for use in RUN)
+ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+ENV CIVITAI_TOKEN=${CIVITAI_TOKEN}
+
+# Original installations
 RUN apt-get update && apt-get install -y curl git \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime
 
-# install nodes
+# Disable tracking
+RUN comfy --skip-prompt tracking disable
+# Install nodes (original + new ones from script)
 RUN comfy node install comfyui_ipadapter_plus@2.0.0
+RUN comfy node install rgthree-comfy
+RUN comfy node install comfyui_essentials
+RUN comfy node install comfyui_ultimatesdupscale
+RUN comfy node install comfyui-kjnodes
+RUN comfy node install comfyui-gguf
+
+# Clone ComfyUI_Base64Images (original)
 RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custom_nodes/ComfyUI_Base64Images
 
-RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision
+# Create directories (original + new ones from script)
+RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision \
+    /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CVT}" \
-    -o /comfyui/models/checkpoints/pornmaster_proSDXLV7.safetensors \
-    "https://civitai.com/api/download/models/2043971?type=Model&format=SafeTensor&size=pruned&fp=fp16"
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
+    -o /comfyui/models/diffusion_models/z_image_turbo-Q4_K_S.gguf \
+    "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q4_K_S.gguf?download=true"
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CVT}" \
-    -o /comfyui/models/loras/Seductive_Expression_SDXL-000040.safetensors \
-    "https://civitai.com/api/download/models/2188184?type=Model&format=SafeTensor"
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" \
+    -o /comfyui/models/loras/Mystic-XXX-ZIT-v3.safetensors \
+    "https://civitai.com/api/download/models/2530056?type=Model&format=SafeTensor"
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CVT}" \
-    -o /comfyui/models/loras/Seductive_Finger_Lips_Expression_SDXL-000046.safetensors \
-    "https://civitai.com/api/download/models/2277333?type=Model&format=SafeTensor"
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
+    -o /comfyui/models/text_encoders/qwen_3_4b.safetensors \
+    "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors?download=true"
 
-# === CLIP-VISION MODELS ===
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors"
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
+    -o /comfyui/models/vae/flux_vae.safetensors \
+    "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors?download=true"
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/clip_vision/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/image_encoder/model.safetensors"
-
-# === SDXL IPADAPTER MODELS ===
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter_sdxl_vit-h.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter_sdxl_vit-h.safetensors"
-
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"
-
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter-plus-face_sdxl_vit-h.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors"
-
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter_sdxl.safetensors \
-    "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter_sdxl.safetensors"
-
-# === FACEID PLUS V2 MODELS ===
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter-faceid-plusv2_sd15.bin \
-    "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin"
-
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/ipadapter/ip-adapter-faceid-plusv2_sdxl.bin \
-    "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin"
-
-# === FACEID PLUS V2 LoRAs ===
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/loras/ip-adapter-faceid-plusv2_sd15_lora.safetensors \
-    "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15_lora.safetensors"
-
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/loras/ip-adapter-faceid-plusv2_sdxl_lora.safetensors \
-    "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
+# Additional downloads
+RUN TARGET_DIR="/comfyui/models/loras/chars" && \
+    mkdir -p "$TARGET_DIR" && \
+    CHARS=("zwc_001") && \
+    for char in "${CHARS[@]}"; do \
+        echo "Downloading: $char.safetensors" && \
+        curl --fail --retry 5 --retry-max-time 0 -C - -L \
+            -o "/comfyui/models/loras/chars/$char.safetensors" \
+            "https://elvale.ru/loras/chars/$char.safetensors"; \
+    done && \
+    echo "Downloaded all characters"
