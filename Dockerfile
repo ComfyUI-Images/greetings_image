@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y curl git \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime
+RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg
 
 # Disable tracking
 RUN comfy --skip-prompt tracking disable
