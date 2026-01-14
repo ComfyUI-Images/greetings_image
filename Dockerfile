@@ -55,5 +55,5 @@ RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer $
     "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors?download=true"
 
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
-    -o /comfyui/models/vae/flux_vae.safetensors \
+    -o /comfyui/models/vae/ae.safetensors \
     "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors?download=true"
