@@ -30,7 +30,19 @@ RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custo
 
 # Create directories (original + new ones from script)
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision \
-    /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae
+    /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae /comfyui/models/loras/chars
+
+# Additional downloads
+RUN set -eux; \
+    TARGET_DIR="/comfyui/models/loras/chars"; \
+    mkdir -p "$TARGET_DIR"; \
+    for char in zwc_001; do \
+        echo "Downloading: $char.safetensors"; \
+        curl --fail --retry 5 --retry-max-time 0 -C - -L \
+            -o "$TARGET_DIR/$char.safetensors" \
+            "https://elvale.ru/loras/chars/$char.safetensors"; \
+    done; \
+    echo "Downloaded all characters"
 
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/diffusion_models/z_image_turbo-Q4_K_S.gguf \
@@ -47,15 +59,3 @@ RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer $
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/vae/flux_vae.safetensors \
     "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors?download=true"
-
-# Additional downloads
-RUN set -eux; \
-    TARGET_DIR="/comfyui/models/loras/chars"; \
-    mkdir -p "$TARGET_DIR"; \
-    for char in zwc_001; do \
-        echo "Downloading: $char.safetensors"; \
-        curl --fail --retry 5 --retry-max-time 0 -C - -L \
-            -o "$TARGET_DIR/$char.safetensors" \
-            "https://elvale.ru/loras/chars/$char.safetensors"; \
-    done; \
-    echo "Downloaded all characters"
