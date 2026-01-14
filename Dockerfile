@@ -46,13 +46,9 @@ RUN set -eux; \
     done; \
     echo "Downloaded all characters"
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
-    -o /comfyui/models/diffusion_models/z_image_turbo-Q4_K_S.gguf \
-    "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q4_K_S.gguf?download=true"
-
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" \
-    -o /comfyui/models/loras/Mystic-XXX-ZIT-v3.safetensors \
-    "https://civitai.com/api/download/models/2530056?type=Model&format=SafeTensor"
+    -o /comfyui/models/diffusion_models/pornmasterZImage_turboV01.safetensors \
+    "https://civitai.com/api/download/models/2555568?type=Model&format=SafeTensor&size=pruned&fp=fp8"
 
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/text_encoders/qwen_3_4b.safetensors \
