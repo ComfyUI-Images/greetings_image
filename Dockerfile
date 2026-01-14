@@ -49,13 +49,13 @@ RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer $
     "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors?download=true"
 
 # Additional downloads
-RUN TARGET_DIR="/comfyui/models/loras/chars" && \
-    mkdir -p "$TARGET_DIR" && \
-    CHARS=("zwc_001") && \
-    for char in "${CHARS[@]}"; do \
-        echo "Downloading: $char.safetensors" && \
+RUN set -eux; \
+    TARGET_DIR="/comfyui/models/loras/chars"; \
+    mkdir -p "$TARGET_DIR"; \
+    for char in zwc_001; do \
+        echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
-            -o "/comfyui/models/loras/chars/$char.safetensors" \
+            -o "$TARGET_DIR/$char.safetensors" \
             "https://elvale.ru/loras/chars/$char.safetensors"; \
-    done && \
+    done; \
     echo "Downloaded all characters"
