@@ -46,7 +46,7 @@ RUN set -eux; \
     done; \
     echo "Downloaded all characters"
 
-RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" \
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
     -o /comfyui/models/diffusion_models/pornmasterZImage_turboV01.safetensors \
     "https://civitai.com/api/download/models/2555568?type=Model&format=SafeTensor&size=pruned&fp=fp8&token=${CIVITAI_TOKEN}"
 
