@@ -10,6 +10,7 @@ ENV CIVITAI_TOKEN=${CIVITAI_TOKEN}
 
 # Original installations
 RUN apt-get update && apt-get install -y curl git \
+    ffmpeg libgl1 libglib2.0-0 \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -23,7 +24,7 @@ RUN comfy node install rgthree-comfy
 RUN comfy node install comfyui_essentials
 RUN comfy node install comfyui_ultimatesdupscale
 RUN comfy node install comfyui-kjnodes
-RUN comfy node install comfyui-gguf
+RUN comfy node install comfyui-gguf@1.1.10
 
 # Clone ComfyUI_Base64Images (original)
 RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custom_nodes/ComfyUI_Base64Images
