@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y curl git \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg
+RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg llama-cpp-python
 
 # Disable tracking
 RUN comfy --skip-prompt tracking disable
@@ -24,7 +24,8 @@ RUN comfy node install rgthree-comfy
 RUN comfy node install comfyui_essentials
 RUN comfy node install comfyui_ultimatesdupscale
 RUN comfy node install comfyui-kjnodes
-RUN comfy node install comfyui-gguf@1.1.10
+
+RUN git clone https://github.com/city96/ComfyUI-GGUF /comfyui/custom_nodes/ComfyUI-GGUF
 
 # Clone ComfyUI_Base64Images (original)
 RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custom_nodes/ComfyUI_Base64Images
