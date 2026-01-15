@@ -25,6 +25,8 @@ RUN rsync -a --delete \
 
 RUN rm -rf /tmp/comfyui-new
 
+RUN pip install -r /comfyui/requirements.txt
+
 RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg llama-cpp-python
 
 # Disable tracking
