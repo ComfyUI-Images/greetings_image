@@ -8,6 +8,9 @@ ARG CIVITAI_TOKEN
 ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 ENV CIVITAI_TOKEN=${CIVITAI_TOKEN}
 
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui || \
+    (cd /comfyui && git pull)
+
 # Original installations
 RUN apt-get update && apt-get install -y curl git \
     ffmpeg libgl1 libglib2.0-0 \
