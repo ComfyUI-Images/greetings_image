@@ -8,14 +8,22 @@ ARG CIVITAI_TOKEN
 ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 ENV CIVITAI_TOKEN=${CIVITAI_TOKEN}
 
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui || \
-    (cd /comfyui && git pull)
-
 # Original installations
 RUN apt-get update && apt-get install -y curl git \
     ffmpeg libgl1 libglib2.0-0 \
     build-essential cmake libopenblas-dev liblapack-dev libjpeg-dev libpng-dev pkg-config python3-dev && \
     rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git /tmp/comfyui-new
+
+RUN rsync -a --delete \
+    --exclude models \
+    --exclude custom_nodes \
+    --exclude user \
+    --exclude output \
+    /tmp/comfyui-new/ /comfyui/
+
+RUN rm -rf /tmp/comfyui-new
 
 RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg llama-cpp-python
 
