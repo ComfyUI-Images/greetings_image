@@ -51,7 +51,7 @@ RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/i
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
-    for char in zwc_001 zwc_002; do \
+    for char in zwc_001 zwc_002 zwc_003; do \
         echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
@@ -60,8 +60,8 @@ RUN set -eux; \
     echo "Downloaded all characters"
 
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
-    -o /comfyui/models/diffusion_models/pornmasterZImage_turboV01.safetensors \
-    "https://civitai.com/api/download/models/2555568?type=Model&format=SafeTensor&size=pruned&fp=fp8&token=8894b6af3f93a899ba9d2f268ddc45aa"
+    -o /comfyui/models/diffusion_models/pornmasterZImage_v02Fp8.safetensors \
+    "https://civitai.com/api/download/models/2580802?type=Model&format=SafeTensor&size=pruned&fp=fp8&token=8894b6af3f93a899ba9d2f268ddc45aa"
 
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/text_encoders/qwen_3_4b.safetensors \
