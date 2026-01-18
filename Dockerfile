@@ -51,7 +51,7 @@ RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/i
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
-    for char in zwc_001 zwc_002 zwc_003; do \
+    for char in zwc_001 zwc_002 zwc_003 zwc_004 zwc_005 zwc_006; do \
         echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
