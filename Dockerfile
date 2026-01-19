@@ -47,25 +47,27 @@ RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custo
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision \
     /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae /comfyui/models/loras/chars
 
-# Additional downloads
+# Additional downloads (POSIX sh compatible)
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
     curl -fsSL https://elvale.ru/loras/chars/chars.txt -o /tmp/chars.txt; \
     COUNT=0; \
     while IFS= read -r char; do \
-        # remove CRLF if present
+        # strip CR (Windows line endings)
         char="$(printf '%s' "$char" | tr -d '\r')"; \
-        # skip empty lines and comments
-        [[ -z "$char" || "$char" =~ ^# ]] && continue; \
-        echo "Downloading: $char.safetensors"; \
+        # skip empty lines
+        [ -z "$char" ] && continue; \
+        # skip comments
+        case "$char" in \#*) continue ;; esac; \
+        echo "→ Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
             "https://elvale.ru/loras/chars/$char.safetensors"; \
         COUNT=$((COUNT+1)); \
     done < /tmp/chars.txt; \
     rm /tmp/chars.txt; \
-    echo "Downloaded $COUNT character LoRA(s)"
+    echo "✓ Downloaded $COUNT character LoRA(s)"
 
 
 # ORIGINAL ZIT
