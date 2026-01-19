@@ -38,7 +38,10 @@ RUN comfy node install comfyui_essentials
 RUN comfy node install comfyui_ultimatesdupscale
 RUN comfy node install comfyui-kjnodes
 
-RUN git clone https://github.com/city96/ComfyUI-GGUF /comfyui/custom_nodes/ComfyUI-GGUF
+# Install GGUF support and dependencies
+RUN set -eux; \
+    git clone https://github.com/city96/ComfyUI-GGUF /comfyui/custom_nodes/ComfyUI-GGUF; \
+    /opt/venv/bin/pip install --no-cache-dir -r /comfyui/custom_nodes/ComfyUI-GGUF/requirements.txt
 
 # Clone ComfyUI_Base64Images (original)
 RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custom_nodes/ComfyUI_Base64Images
