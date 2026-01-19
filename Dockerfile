@@ -51,13 +51,22 @@ RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/i
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
-    for char in zwc_001 zwc_002 zwc_003 zwc_004 zwc_005 zwc_006; do \
+    curl -fsSL https://elvale.ru/loras/chars/chars.txt -o /tmp/chars.txt; \
+    COUNT=0; \
+    while IFS= read -r char; do \
+        # remove CRLF if present
+        char="$(printf '%s' "$char" | tr -d '\r')"; \
+        # skip empty lines and comments
+        [[ -z "$char" || "$char" =~ ^# ]] && continue; \
         echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
             "https://elvale.ru/loras/chars/$char.safetensors"; \
-    done; \
-    echo "Downloaded all characters"
+        COUNT=$((COUNT+1)); \
+    done < /tmp/chars.txt; \
+    rm /tmp/chars.txt; \
+    echo "Downloaded $COUNT character LoRA(s)"
+
 
 # ORIGINAL ZIT
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
