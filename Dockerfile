@@ -76,3 +76,8 @@ RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer $
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/vae/ae.safetensors \
     "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors?download=true"
+
+# LORAS
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${CIVITAI_TOKEN}" \
+    -o /comfyui/models/loras/Mystic-XXX-ZIT-v3.safetensors \
+    "https://civitai.com/api/download/models/2530056?type=Model&format=SafeTensor"
