@@ -60,14 +60,14 @@ RUN set -eux; \
         [ -z "$char" ] && continue; \
         # skip comments
         case "$char" in \#*) continue ;; esac; \
-        echo "→ Downloading: $char.safetensors"; \
+        echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
             "https://elvale.ru/loras/chars/$char.safetensors"; \
         COUNT=$((COUNT+1)); \
     done < /tmp/chars.txt; \
     rm /tmp/chars.txt; \
-    echo "✓ Downloaded $COUNT character LoRA(s)"
+    echo "Downloaded $COUNT character LoRA(s)"
 
 
 # ORIGINAL ZIT
