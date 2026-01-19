@@ -45,7 +45,7 @@ RUN git clone https://github.com/Asidert/ComfyUI_Base64Images.git /comfyui/custo
 
 # Create directories (original + new ones from script)
 RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/ipadapter /comfyui/models/clip_vision \
-    /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae /comfyui/models/loras/chars
+    /comfyui/models/diffusion_models /comfyui/models/text_encoders /comfyui/models/vae /comfyui/models/loras/chars /comfyui/models/loras/zit
 
 # Additional downloads (POSIX sh compatible)
 RUN set -eux; \
