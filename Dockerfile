@@ -59,6 +59,12 @@ RUN set -eux; \
     done; \
     echo "Downloaded all characters"
 
+# ORIGINAL ZIT
+RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
+    -o /comfyui/models/diffusion_models/z_image_turbo-Q4_K_S.gguf \
+    "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q4_K_S.gguf?download=true"
+
+# PORNMASTER CHECKPOINT
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L \
     -o /comfyui/models/diffusion_models/pornmasterZImage_v02Fp8.safetensors \
     "https://civitai.com/api/download/models/2580802?type=Model&format=SafeTensor&size=pruned&fp=fp8&token=8894b6af3f93a899ba9d2f268ddc45aa"
