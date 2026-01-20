@@ -72,7 +72,6 @@ RUN set -eux; \
     rm /tmp/chars.txt; \
     echo "Downloaded $COUNT character LoRA(s)"
 
-
 # ORIGINAL ZIT
 RUN curl --fail --retry 5 --retry-max-time 0 -C - -L -H "Authorization: Bearer ${HUGGINGFACE_TOKEN}" \
     -o /comfyui/models/diffusion_models/z_image_turbo-Q4_K_S.gguf \
