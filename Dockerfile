@@ -56,7 +56,7 @@ RUN set -eux; \
     mkdir -p "$TARGET_DIR"; \
     curl -fsSL https://elvale.ru/loras/chars/chars.txt -o /tmp/chars.txt; \
     COUNT=0; \
-    while IFS= read -r char; do \
+    while IFS= read -r char || [ -n "$char" ]; do \
         # strip CR (Windows line endings)
         char="$(printf '%s' "$char" | tr -d '\r')"; \
         # skip empty lines
