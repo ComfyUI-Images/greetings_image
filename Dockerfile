@@ -27,7 +27,7 @@ RUN rm -rf /tmp/comfyui-new
 
 RUN /opt/venv/bin/pip install -r /comfyui/requirements.txt
 
-RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg llama-cpp-python gguf>=0.13.0 sentencepiece protobuf
+RUN /opt/venv/bin/pip install opencv-python "insightface==0.7.3" onnxruntime rembg llama-cpp-python gguf>=0.13.0 sentencepiece protobuf comfy_aimdo
 
 # Disable tracking
 RUN comfy --skip-prompt tracking disable
