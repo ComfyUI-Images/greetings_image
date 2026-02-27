@@ -54,7 +54,7 @@ RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/i
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
-    curl -fsSL https://elvale.ru/loras/chars/chars.txt -o /tmp/chars.txt; \
+    curl -fsSL https://flammaverse.com/loras/chars/chars.txt -o /tmp/chars.txt; \
     COUNT=0; \
     while IFS= read -r char || [ -n "$char" ]; do \
         # strip CR (Windows line endings)
@@ -66,7 +66,7 @@ RUN set -eux; \
         echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
-            "https://elvale.ru/loras/chars/$char.safetensors"; \
+            "https://flammaverse.com/loras/chars/$char.safetensors"; \
         COUNT=$((COUNT+1)); \
     done < /tmp/chars.txt; \
     rm /tmp/chars.txt; \
