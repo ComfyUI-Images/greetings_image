@@ -54,22 +54,19 @@ RUN mkdir -p /comfyui/models/checkpoints /comfyui/models/loras /comfyui/models/i
 RUN set -eux; \
     TARGET_DIR="/comfyui/models/loras/chars"; \
     mkdir -p "$TARGET_DIR"; \
-    curl -fsSL https://flammaverse.com/loras/chars/chars.txt -o /tmp/chars.txt; \
     COUNT=0; \
+    curl -fsSL https://flammaverse.com/loras_list | \
     while IFS= read -r char || [ -n "$char" ]; do \
-        # strip CR (Windows line endings)
+        # strip CR (если вдруг)
         char="$(printf '%s' "$char" | tr -d '\r')"; \
         # skip empty lines
         [ -z "$char" ] && continue; \
-        # skip comments
-        case "$char" in \#*) continue ;; esac; \
         echo "Downloading: $char.safetensors"; \
         curl --fail --retry 5 --retry-max-time 0 -C - -L \
             -o "$TARGET_DIR/$char.safetensors" \
             "https://flammaverse.com/loras/chars/$char.safetensors"; \
         COUNT=$((COUNT+1)); \
-    done < /tmp/chars.txt; \
-    rm /tmp/chars.txt; \
+    done; \
     echo "Downloaded $COUNT character LoRA(s)"
 
 
